@@ -15,20 +15,27 @@ class BooksController < ApplicationController
       redirect_to book_path(@book), notice: "You have created book successfully."
     else
       @books = Book.all
-      render 'index'
+      render "index"
     end
   end
 
   def edit
     @book = Book.find(params[:id])
+    unless user_is_book_owner?
+       redirect_to book_path(@book), alert: "You are not authorized to edit information in this book."
+    end
   end
 
   def update
     @book = Book.find(params[:id])
-    if @book.update(book_params)
-      redirect_to book_path(@book), notice: "You have updated book successfully."
+    if user_is_book_owner?
+      if @book.update(book_params)
+        redirect_to book_path(@book), notice: "You have updated book successfully."
+      else
+        render "edit"
+      end
     else
-      render "edit"
+      redirect_to book_path(@book), alert: "You are not authorized to edit information in this book."
     end
   end
 
@@ -42,5 +49,9 @@ class BooksController < ApplicationController
 
   def book_params
     params.require(:book).permit(:title,:body)
+  end
+
+  def user_is_book_owner?
+    @book.user_id == current_user.id
   end
 end
