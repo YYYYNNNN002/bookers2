@@ -8,7 +8,7 @@ class BookCommentsController < ApplicationController
   end
 
   def destroy
-    @book_comment = BookComment.find_by(user_id: current_user.id, book_id: params[:book_id])
+    @book_comment = BookComment.find(params[:id])
     if @book_comment.present? && user_is_comment_owner?
       @book_comment.destroy
     end

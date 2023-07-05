@@ -1,5 +1,5 @@
 class BookComment < ApplicationRecord
   belongs_to :user
   belongs_to :book
-  validates :comment, length: { maximum: 140 }, uniqueness: true
+  validates :comment, length: { maximum: 140 }, presence: true
 end
