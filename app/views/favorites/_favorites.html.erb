@@ -1,0 +1,9 @@
+<% if book.favorited?(current_user, book) %>
+  <%= link_to book_favorites_path(book.id), method: :delete, remote: true do %>
+      <span style="color:red;">♥<%= book.favorites.size%>︎</span>
+  <% end %>
+<% else %>
+  <%= link_to book_favorites_path(book.id), method: :post, remote: true do %>
+      <span style="color:blue;">♡<%= book.favorites.size%>︎</span>
+  <% end %>
+<% end %>
