@@ -29,3 +29,20 @@
     <%= link_to "フォローする", user_relationships_path(user.id), class: 'btn btn-success', method: :post %>
   <% end %>
 </div>
+&nbsp;
+<div class='row'>
+  <% if user != current_user %>
+    <% if current_user.following?(user) && user.following?(current_user)  %>
+    <% if isRoom == true %>
+      <p class="user-show-room"><a href="/rooms/<%= roomId %>" class="btn btn-primary btn-block">チャットへ</a>
+    <% else %>
+      <%= form_for room do |f| %>
+        <%= fields_for entry do |e| %>
+          <%= e.hidden_field :user_id, value: user.id %>
+        <% end %>
+        <%= f.submit "チャットを始める", class:"btn btn-primary user-show-chat"%>
+      <% end %>
+    <% end %>
+    <% end %>
+  <% end %>
+</div>
